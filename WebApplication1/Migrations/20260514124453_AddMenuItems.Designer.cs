@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
@@ -11,9 +12,11 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260514124453_AddMenuItems")]
+    partial class AddMenuItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,98 +261,6 @@ namespace WebApplication1.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MenuItems");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Category = "Appetizer",
-                            Description = "Crispy and delicious samosa filled with spiced potatoes and peas.",
-                            Image = "",
-                            Name = "Samosa",
-                            Price = 2.9900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Category = "Main Course",
-                            Description = "Grilled paneer cubes marinated in a blend of spices and yogurt.",
-                            Image = "",
-                            Name = "Paneer Tikka",
-                            Price = 9.9900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Category = "Dessert",
-                            Description = "Soft and sweet gulab jamun soaked in rose-flavored syrup.",
-                            Image = "",
-                            Name = "Gulab Jamun",
-                            Price = 4.9900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Category = "Dessert",
-                            Description = "Soft and sweet gulab jamun soaked in rose-flavored syrup.",
-                            Image = "",
-                            Name = "Gulab Jamun",
-                            Price = 4.9900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Category = "Dessert",
-                            Description = "Soft and sweet gulab jamun syrup.",
-                            Image = "",
-                            Name = "Gulab Jamun",
-                            Price = 4.9900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Category = "Dessert",
-                            Description = "Soft and sweet gulab jamun syrup.",
-                            Image = "",
-                            Name = "Gulab Jamun",
-                            Price = 4.9900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Category = "Dessert",
-                            Description = "Soft and sweet gulab jamun syrup.",
-                            Image = "",
-                            Name = "Gulab Jamun",
-                            Price = 4.9900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Category = "Dessert",
-                            Description = "Soft and sweet gulab jamun syrup.",
-                            Image = "",
-                            Name = "Gulab Jamun",
-                            Price = 4.9900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Category = "Dessert",
-                            Description = "Soft and sweet gulab jamun syrup.",
-                            Image = "",
-                            Name = "Gulab Jamun",
-                            Price = 4.9900000000000002,
-                            SpecialTag = ""
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
