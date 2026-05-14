@@ -1,0 +1,21 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+
+# JetBrains / macOS
+.idea/
+.DS_Store
+
+# .NET user-local files
+*.user
+*.suo
+
+# Local secrets and machine-specific config
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/appsettings.*.local.json
+.env
+.env.*
+
