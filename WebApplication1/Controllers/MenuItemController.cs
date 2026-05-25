@@ -24,4 +24,18 @@ public class MenuItemController : Controller
         _response.StatusCode = System.Net.HttpStatusCode.OK; // set the status code to 200 OK
         return Ok(_response); 
     }
+    [HttpGet("{id:int}", Name = "GetMenuItem")]
+    public IActionResult GetMenuItem(int id)
+    {
+        if (id == 0)
+        {
+            _response.IsSuccess = false; // set success to false if not found
+            _response.StatusCode = System.Net.HttpStatusCode.NotFound; // set status code to 404 Not Found
+            return BadRequest(_response); // return 400 response with the API response object
+        }
+        MenuItem? menuItem  = _db.MenuItems.FirstOrDefault(m => m.Id == id);
+        _response.Result = menuItem; // set the result to the found menu item
+        _response.StatusCode = System.Net.HttpStatusCode.OK; // set status code to 200 OK
+        return Ok(_response); // return 200 response with the API response object
+    }
 }
