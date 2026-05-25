@@ -15,7 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<MenuItem>().HasData(
+        builder.Entity<MenuItem>().HasData( // data seeding
             new MenuItem
             {
                 Id = 1,
