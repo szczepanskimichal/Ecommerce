@@ -14,4 +14,3 @@ public class DbController(ApplicationDbContext context) : ControllerBase
         return Ok(new { canConnect });
     }
 }
-

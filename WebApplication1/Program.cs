@@ -20,6 +20,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
 // this 2 under are used to wwwroot(bindings folders)
 app.UseDefaultFiles();
 app.UseStaticFiles();

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
@@ -10,8 +9,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
     }
+
     public DbSet<MenuItem> MenuItems { get; set; }
-    
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -24,7 +24,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Image = "",
                 Price = 2.99,
                 Category = "Appetizer",
-                SpecialTag = "",
+                SpecialTag = ""
             },
             new MenuItem
             {
@@ -34,7 +34,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Image = "",
                 Price = 9.99,
                 Category = "Main Course",
-                SpecialTag = "",
+                SpecialTag = ""
             },
             new MenuItem
             {
@@ -44,7 +44,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
-                SpecialTag = "",
+                SpecialTag = ""
             },
             new MenuItem
             {
@@ -54,7 +54,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
-                SpecialTag = "",
+                SpecialTag = ""
             },
             new MenuItem
             {
@@ -64,7 +64,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
-                SpecialTag = "",
+                SpecialTag = ""
             },
             new MenuItem
             {
@@ -74,7 +74,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
-                SpecialTag = "",
+                SpecialTag = ""
             },
             new MenuItem
             {
@@ -84,7 +84,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
-                SpecialTag = "",
+                SpecialTag = ""
             },
             new MenuItem
             {
@@ -94,7 +94,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
-                SpecialTag = "",
+                SpecialTag = ""
             },
             new MenuItem
             {
@@ -104,9 +104,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
-                SpecialTag = "",
+                SpecialTag = ""
             }
         );
     }
 }
-

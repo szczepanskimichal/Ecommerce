@@ -13,8 +13,8 @@ public class MenuItemController : Controller
 {
     //dependency injection
     private readonly ApplicationDbContext _db;
-    private readonly ApiResponse _response; // for API responses
     private readonly IWebHostEnvironment _env;
+    private readonly ApiResponse _response; // for API responses
 
     public MenuItemController(ApplicationDbContext db, IWebHostEnvironment env) //constructor injection
     {
@@ -42,13 +42,13 @@ public class MenuItemController : Controller
             return BadRequest(_response); // return 400 response with the API response object
         }
 
-        MenuItem? menuItem = _db.MenuItems.FirstOrDefault(m => m.Id == id);
+        var menuItem = _db.MenuItems.FirstOrDefault(m => m.Id == id);
         _response.Result = menuItem; // set the result to the found menu item
         _response.StatusCode = HttpStatusCode.OK; // set status code to 200 OK
         return Ok(_response); // return 200 response with the API response object
     }
 
-[HttpPost]
+    [HttpPost]
     public async Task<ActionResult<ApiResponse>> CreateMenuItem([FromForm] MenuItemCreateDto menuItemCreateDto)
     {
         try
@@ -62,24 +62,19 @@ public class MenuItemController : Controller
                     _response.ErrorMessages = new List<string> { "File is required." };
                     return BadRequest(_response);
                 }
+
                 var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                 var imagesPath = Path.Combine(webRoot, "images");
-                if (!Directory.Exists(imagesPath))
-                {
-                    Directory.CreateDirectory(imagesPath);
-                }
+                if (!Directory.Exists(imagesPath)) Directory.CreateDirectory(imagesPath);
                 var filePath = Path.Combine(imagesPath, menuItemCreateDto.File.FileName);
-                if (System.IO.File.Exists(filePath))
-                {
-                    System.IO.File.Delete(filePath);
-                }
+                if (System.IO.File.Exists(filePath)) System.IO.File.Delete(filePath);
                 // uploading the img to root folder!!!!
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await menuItemCreateDto.File.CopyToAsync(stream);
                 }
-                
-                MenuItem menuItem = new ()
+
+                MenuItem menuItem = new()
                 {
                     Name = menuItemCreateDto.Name,
                     Description = menuItemCreateDto.Description,
@@ -90,15 +85,13 @@ public class MenuItemController : Controller
                 };
                 _db.MenuItems.Add(menuItem);
                 await _db.SaveChangesAsync();
-                
+
                 _response.Result = menuItem;
                 _response.StatusCode = HttpStatusCode.Created;
                 return CreatedAtRoute("GetMenuItem", new { id = menuItem.Id }, _response);
             }
-            else
-            {
-                _response.IsSuccess = false;
-            }
+
+            _response.IsSuccess = false;
         }
         catch (Exception e)
         {
@@ -106,11 +99,12 @@ public class MenuItemController : Controller
             _response.ErrorMessages = new List<string> { e.ToString() };
             throw;
         }
+
         return BadRequest(_response);
     }
-    
+
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<ApiResponse>> UpdateMenuItem(int id,[FromForm] MenuItemUpdateDto menuItemUpdateDto)
+    public async Task<ActionResult<ApiResponse>> UpdateMenuItem(int id, [FromForm] MenuItemUpdateDto menuItemUpdateDto)
     {
         try
         {
@@ -122,58 +116,51 @@ public class MenuItemController : Controller
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
-                MenuItem? menuItemFromDb = await _db.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
-                                if(menuItemFromDb == null)
-                                {
-                                    _response.IsSuccess = false;
-                                    _response.StatusCode = HttpStatusCode.NotFound;
-                                    return NotFound(_response);
-                                }
-                                menuItemFromDb.Name = menuItemUpdateDto.Name;
-                                menuItemFromDb.Description = menuItemUpdateDto.Description;
-                                menuItemFromDb.Price = menuItemUpdateDto.Price;
-                                menuItemFromDb.Category = menuItemUpdateDto.Category;
-                                menuItemFromDb.SpecialTag = menuItemUpdateDto.SpecialTag;
-                                if (menuItemUpdateDto.File != null && menuItemUpdateDto.File.Length > 0)
-                                {
-                                    var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                                                    var imagesPath = Path.Combine(webRoot, "images");
-                                                    if (!Directory.Exists(imagesPath))
-                                                    {
-                                                        Directory.CreateDirectory(imagesPath);
-                                                    }
-                                                    
-                                                    var filePath = Path.Combine(imagesPath, menuItemUpdateDto.File.FileName);
-                                                    if (System.IO.File.Exists(filePath))
-                                                    {
-                                                        System.IO.File.Delete(filePath);
-                                                    }
 
-                                                    var filePath_OldFile =
-                                                        Path.Combine(_env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"), menuItemFromDb.Image);
-                                                    if(System.IO.File.Exists(filePath_OldFile))
-                                                    {
-                                                        System.IO.File.Delete(filePath_OldFile);
-                                                    }
-                                                        //Upload Image
-                                                        using (var stream = new FileStream(filePath, FileMode.Create))
-                                                        {
-                                                            await menuItemUpdateDto.File.CopyToAsync(stream);
-                                                        }
-                                                        menuItemFromDb.Image = "images/" + menuItemUpdateDto.File.FileName;
-                                }
-                
-                
+                var menuItemFromDb = await _db.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
+                if (menuItemFromDb == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+                menuItemFromDb.Name = menuItemUpdateDto.Name;
+                menuItemFromDb.Description = menuItemUpdateDto.Description;
+                menuItemFromDb.Price = menuItemUpdateDto.Price;
+                menuItemFromDb.Category = menuItemUpdateDto.Category;
+                menuItemFromDb.SpecialTag = menuItemUpdateDto.SpecialTag;
+                if (menuItemUpdateDto.File != null && menuItemUpdateDto.File.Length > 0)
+                {
+                    var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    var imagesPath = Path.Combine(webRoot, "images");
+                    if (!Directory.Exists(imagesPath)) Directory.CreateDirectory(imagesPath);
+
+                    var filePath = Path.Combine(imagesPath, menuItemUpdateDto.File.FileName);
+                    if (System.IO.File.Exists(filePath)) System.IO.File.Delete(filePath);
+
+                    var filePath_OldFile =
+                        Path.Combine(_env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"),
+                            menuItemFromDb.Image);
+                    if (System.IO.File.Exists(filePath_OldFile)) System.IO.File.Delete(filePath_OldFile);
+                    //Upload Image
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await menuItemUpdateDto.File.CopyToAsync(stream);
+                    }
+
+                    menuItemFromDb.Image = "images/" + menuItemUpdateDto.File.FileName;
+                }
+
+
                 _db.MenuItems.Update(menuItemFromDb);
                 await _db.SaveChangesAsync();
-                
+
                 _response.StatusCode = HttpStatusCode.NoContent;
                 return Ok(_response);
             }
-            else
-            {
-                _response.IsSuccess = false;
-            }
+
+            _response.IsSuccess = false;
         }
         catch (Exception e)
         {
@@ -181,6 +168,58 @@ public class MenuItemController : Controller
             _response.ErrorMessages = new List<string> { e.ToString() };
             throw;
         }
+
+        return BadRequest(_response);
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult<ApiResponse>> DeleteMenuItem(int id)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_response);
+                }
+
+                var menuItemFromDb = await _db.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
+                if (menuItemFromDb == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+
+                var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+
+                var filePath_OldFile =
+                    Path.Combine(_env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"),
+                        menuItemFromDb.Image);
+                if (System.IO.File.Exists(filePath_OldFile)) System.IO.File.Delete(filePath_OldFile);
+
+
+                _db.MenuItems.Remove(menuItemFromDb);
+                await _db.SaveChangesAsync();
+
+                _response.StatusCode = HttpStatusCode.NoContent;
+                return Ok(_response);
+            }
+
+            _response.IsSuccess = false;
+        }
+        catch (Exception e)
+        {
+            _response.IsSuccess = false;
+            _response.ErrorMessages = new List<string> { e.ToString() };
+            throw;
+        }
+
         return BadRequest(_response);
     }
 }
