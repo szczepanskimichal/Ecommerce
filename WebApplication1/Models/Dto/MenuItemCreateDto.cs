@@ -12,5 +12,5 @@ public class MenuItemCreateDto
     public string? SpecialTag { get; set; } 
     [Range(1, 1000)] 
     public double Price { get; set; }
-    public IFormFile File { get; set; } = null!;
+    public IFormFile? File { get; set; }
 }
