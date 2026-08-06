@@ -172,7 +172,7 @@ public class MenuItemController : Controller
         return BadRequest(_response);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse>> DeleteMenuItem(int id)
     {
         try
@@ -202,22 +202,16 @@ public class MenuItemController : Controller
                     Path.Combine(_env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"),
                         menuItemFromDb.Image);
                 if (System.IO.File.Exists(filePath_OldFile)) System.IO.File.Delete(filePath_OldFile);
-
-
                 _db.MenuItems.Remove(menuItemFromDb);
                 await _db.SaveChangesAsync();
-
                 _response.StatusCode = HttpStatusCode.NoContent;
                 return Ok(_response);
             }
-
-            _response.IsSuccess = false;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
             _response.IsSuccess = false;
-            _response.ErrorMessages = new List<string> { e.ToString() };
-            throw;
+            _response.ErrorMessages = new List<string> { ex.ToString() };
         }
 
         return BadRequest(_response);
