@@ -1,5 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.Models;
 using WebApplication1.Models.Dto;
@@ -93,6 +94,81 @@ public class MenuItemController : Controller
                 _response.Result = menuItem;
                 _response.StatusCode = HttpStatusCode.Created;
                 return CreatedAtRoute("GetMenuItem", new { id = menuItem.Id }, _response);
+            }
+            else
+            {
+                _response.IsSuccess = false;
+            }
+        }
+        catch (Exception e)
+        {
+            _response.IsSuccess = false;
+            _response.ErrorMessages = new List<string> { e.ToString() };
+            throw;
+        }
+        return BadRequest(_response);
+    }
+    
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<ApiResponse>> UpdateMenuItem(int id,[FromForm] MenuItemUpdateDto menuItemUpdateDto)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                if (menuItemUpdateDto.Id != id)
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_response);
+                }
+                MenuItem? menuItemFromDb = await _db.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
+                                if(menuItemFromDb == null)
+                                {
+                                    _response.IsSuccess = false;
+                                    _response.StatusCode = HttpStatusCode.NotFound;
+                                    return NotFound(_response);
+                                }
+                                menuItemFromDb.Name = menuItemUpdateDto.Name;
+                                menuItemFromDb.Description = menuItemUpdateDto.Description;
+                                menuItemFromDb.Price = menuItemUpdateDto.Price;
+                                menuItemFromDb.Category = menuItemUpdateDto.Category;
+                                menuItemFromDb.SpecialTag = menuItemUpdateDto.SpecialTag;
+                                if (menuItemUpdateDto.File != null && menuItemUpdateDto.File.Length > 0)
+                                {
+                                    var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                                                    var imagesPath = Path.Combine(webRoot, "images");
+                                                    if (!Directory.Exists(imagesPath))
+                                                    {
+                                                        Directory.CreateDirectory(imagesPath);
+                                                    }
+                                                    
+                                                    var filePath = Path.Combine(imagesPath, menuItemUpdateDto.File.FileName);
+                                                    if (System.IO.File.Exists(filePath))
+                                                    {
+                                                        System.IO.File.Delete(filePath);
+                                                    }
+
+                                                    var filePath_OldFile =
+                                                        Path.Combine(_env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"), menuItemFromDb.Image);
+                                                    if(System.IO.File.Exists(filePath_OldFile))
+                                                    {
+                                                        System.IO.File.Delete(filePath_OldFile);
+                                                    }
+                                                        //Upload Image
+                                                        using (var stream = new FileStream(filePath, FileMode.Create))
+                                                        {
+                                                            await menuItemUpdateDto.File.CopyToAsync(stream);
+                                                        }
+                                                        menuItemFromDb.Image = "images/" + menuItemUpdateDto.File.FileName;
+                                }
+                
+                
+                _db.MenuItems.Update(menuItemFromDb);
+                await _db.SaveChangesAsync();
+                
+                _response.StatusCode = HttpStatusCode.NoContent;
+                return Ok(_response);
             }
             else
             {
