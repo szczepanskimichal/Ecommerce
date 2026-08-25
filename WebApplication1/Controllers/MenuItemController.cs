@@ -11,7 +11,7 @@ namespace WebApplication1.Controllers;
 [ApiController]
 public class MenuItemController : Controller
 {
-    //dependency injection
+    //dependency injection !!!
     private readonly ApplicationDbContext _db;
     private readonly IWebHostEnvironment _env;
     private readonly ApiResponse _response; // for API responses
@@ -19,7 +19,7 @@ public class MenuItemController : Controller
     public MenuItemController(ApplicationDbContext db, IWebHostEnvironment env) //constructor injection
     {
         _db = db;
-        _response = new ApiResponse(); // initialize the response object
+        _response = new ApiResponse(); // initialize the response object, injected in the constructor!!!
         _env = env;
     }
 
@@ -42,7 +42,13 @@ public class MenuItemController : Controller
             return BadRequest(_response); // return 400 response with the API response object
         }
 
-        var menuItem = _db.MenuItems.FirstOrDefault(m => m.Id == id);
+        MenuItem? menuItem = _db.MenuItems.FirstOrDefault(m => m.Id == id);
+        if (menuItem == null)
+        {
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.NotFound;
+            return NotFound(_response);
+        }
         _response.Result = menuItem; // set the result to the found menu item
         _response.StatusCode = HttpStatusCode.OK; // set status code to 200 OK
         return Ok(_response); // return 200 response with the API response object
@@ -63,17 +69,20 @@ public class MenuItemController : Controller
                     return BadRequest(_response);
                 }
 
-                var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                var imagesPath = Path.Combine(webRoot, "images");
-                if (!Directory.Exists(imagesPath)) Directory.CreateDirectory(imagesPath);
-                var filePath = Path.Combine(imagesPath, menuItemCreateDto.File.FileName);
-                if (System.IO.File.Exists(filePath)) System.IO.File.Delete(filePath);
-                // uploading the img to root folder!!!!
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                var webRootPath = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                if (_env.WebRootPath != null)
                 {
-                    await menuItemCreateDto.File.CopyToAsync(stream);
+                    var imagesPath = Path.Combine(_env.WebRootPath, "images");
+                    if (!Directory.Exists(imagesPath)) Directory.CreateDirectory(imagesPath);
+                    var filePath = Path.Combine(imagesPath, menuItemCreateDto.File.FileName);
+                    if (System.IO.File.Exists(filePath)) System.IO.File.Delete(filePath);
+                    // uploading the img !!!!
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await menuItemCreateDto.File.CopyToAsync(stream);
+                    }
                 }
-
+                // if created, we need to save the menu item in the database !!!
                 MenuItem menuItem = new()
                 {
                     Name = menuItemCreateDto.Name,
@@ -86,7 +95,7 @@ public class MenuItemController : Controller
                 _db.MenuItems.Add(menuItem);
                 await _db.SaveChangesAsync();
 
-                _response.Result = menuItem;
+                _response.Result = menuItemCreateDto;
                 _response.StatusCode = HttpStatusCode.Created;
                 return CreatedAtRoute("GetMenuItem", new { id = menuItem.Id }, _response);
             }
