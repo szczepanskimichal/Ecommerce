@@ -21,11 +21,11 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-// this 2 under are used to wwwroot(bindings folders)
+// this 3 under are used to wwwroot(bindings folders)!!!!
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
 app.UseHttpsRedirection();
+//-----------------------
 app.UseAuthentication();
 app.MapControllers();
 app.Run();

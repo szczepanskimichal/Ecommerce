@@ -10,8 +10,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
     }
 
-    public DbSet<MenuItem> MenuItems { get; set; }
-
+    // !!! this one is for the MenuItem model, which will be used to create a table in the database.
+    public DbSet<MenuItem> MenuItems { get; set; } 
+    //-----------------
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -40,7 +41,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             {
                 Id = 3,
                 Name = "Gulab Jamun",
-                Description = "Soft and sweet gulab jamun soaked in rose-flavored syrup.",
+                Description = "Soft and sweet gulab jamun ssndafn lorem ipsumaf oaked in rose-flavored syrup.",
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
@@ -60,7 +61,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             {
                 Id = 5,
                 Name = "Gulab Jamun",
-                Description = "Soft and sweet gulab jamun syrup.",
+                Description = "Soft and sweet gulab jamun syrup. loremipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
@@ -70,7 +71,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             {
                 Id = 6,
                 Name = "Gulab Jamun",
-                Description = "Soft and sweet gulab jamun syrup.",
+                Description = "Soft and sweet gulab jamun syrup. loremipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
@@ -80,7 +81,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             {
                 Id = 7,
                 Name = "Gulab Jamun",
-                Description = "Soft and sweet gulab jamun syrup.",
+                Description = "loremipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
@@ -90,7 +91,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             {
                 Id = 8,
                 Name = "Gulab Jamun",
-                Description = "Soft and sweet gulab jamun syrup.",
+                Description = "Soft and sweet gulab jamun syrup. loremipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",
@@ -100,7 +101,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             {
                 Id = 9,
                 Name = "Gulab Jamun",
-                Description = "Soft and sweet gulab jamun syrup.",
+                Description = "Soft and sweet gulab jamun syrup. loremipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 Image = "",
                 Price = 4.99,
                 Category = "Dessert",

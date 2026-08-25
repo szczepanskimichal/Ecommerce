@@ -1,4 +1,4 @@
-@WebApplication1_HostAddress = http://localhost:5297
+@WebApplication1_HostAddress = http://localhost:7029
 
 GET {{WebApplication1_HostAddress}}/api/products
 Accept: application/json
