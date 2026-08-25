@@ -13,9 +13,9 @@ riderModule.iml
 *.suo
 
 # Local secrets and machine-specific config
+**/appsettings.json
 **/appsettings.Development.json
 **/appsettings.Local.json
 **/appsettings.*.local.json
 .env
 .env.*
-
