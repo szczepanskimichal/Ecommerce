@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -12,6 +13,26 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllers();
+
+var key = builder.Configuration.GetValue<string>("AppSettings:Secret");
+builder.Services.AddAuthentication((u =>
+        {
+            u.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            u.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }
+    )).AddJwtBearer( u =>
+    {
+        u.RequireHttpsMetadata = false;
+        u.SaveToken = true;
+        u.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(key)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
 builder.Services.AddOpenApi();
 var app = builder.Build();
 //configure http request pipeline
@@ -27,5 +48,6 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 //-----------------------
 app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
