@@ -35,6 +35,12 @@ builder.Services.AddAuthentication((u =>
             ValidateLifetime = true
         };
     });
+
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<BarerSeciuritySchemeTransformer>();
+});
+
 //-----
 builder.Services.AddOpenApi();
 var app = builder.Build();
