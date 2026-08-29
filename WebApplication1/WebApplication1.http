@@ -7,7 +7,7 @@ Accept: application/json
 ###
 
 ### GET one menu item by id
-GET {{WebApplication1_HostAddress}}/api/MenuItem/6
+GET {{WebApplication1_HostAddress}}/api/MenuItem/6d
 Accept: application/json
 
 ###

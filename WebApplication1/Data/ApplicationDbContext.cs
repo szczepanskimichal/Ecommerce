@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
+using WebApplication1.Models.Dto;
 
 namespace WebApplication1.Data;
 
@@ -12,6 +13,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     // !!! this one is for the MenuItem model, which will be used to create a table in the database.
     public DbSet<MenuItem> MenuItems { get; set; } 
+    public DbSet<OrderHeader> OrderHeaders { get; set; }
+    public DbSet<OrderDetail> OrderDetails { get; set; }
     //-----------------
     protected override void OnModelCreating(ModelBuilder builder)
     {
