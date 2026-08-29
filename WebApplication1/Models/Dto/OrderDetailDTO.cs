@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models.Dto;
 
-public class OrderDetail
+public class OrderDetailDTO
 {
     [Key]
     public int OrderDetailId { get; set; }
@@ -20,5 +20,5 @@ public class OrderDetail
     public string ItemName { get; set; } = string.Empty;
     [Required]
     public double Price { get; set; }
-    
+    public int? Rating { get; set; } = null;
 }

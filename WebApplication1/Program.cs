@@ -58,6 +58,13 @@ app.UseHttpsRedirection();
 //-----------------------
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithExposedHeaders("X-Pagination");
+});
 app.MapControllers();
 app.Run();
 

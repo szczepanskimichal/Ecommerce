@@ -14,7 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     // !!! this one is for the MenuItem model, which will be used to create a table in the database.
     public DbSet<MenuItem> MenuItems { get; set; } 
     public DbSet<OrderHeader> OrderHeaders { get; set; }
-    public DbSet<OrderDetail> OrderDetails { get; set; }
+    public DbSet<OrderDetailDTO> OrderDetails { get; set; }
     //-----------------
     protected override void OnModelCreating(ModelBuilder builder)
     {
