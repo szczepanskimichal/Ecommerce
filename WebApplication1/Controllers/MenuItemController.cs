@@ -54,6 +54,12 @@ public class MenuItemController : Controller
         }
 
         MenuItem? menuItem = _db.MenuItems.FirstOrDefault(m => m.Id == id);
+        if (menuItem == null)
+        {
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.NotFound;
+            return NotFound(_response);
+        }
         List<OrderDetailDTO> orderDetailsWithRatings = _db.OrderDetails.Where(od => od.Rating != null && od.MenuItemId==menuItem.Id).ToList(); // fetch order details with ratings
 
         var ratings = orderDetailsWithRatings.Select(od => od.Rating.Value); // get ratings for the current menu item
