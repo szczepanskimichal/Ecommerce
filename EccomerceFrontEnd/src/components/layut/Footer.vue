@@ -3,9 +3,9 @@
     <div class="footer text-center mx-auto p-3 rounded-2">
       <p class="m-0">
         © 2024 Copyright:
-        <a href="https://example.com/">example.com</a>
+        <a href="https://example.com/">Michal</a>
         Made with <i class="bi bi-heart-fill text-danger"></i> by
-        <a href="https://example.com/">example.com</a>
+        <a href="https://example.com/">Michal</a>
       </p>
     </div>
   </footer>
