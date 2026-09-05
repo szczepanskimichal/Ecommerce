@@ -1,22 +1,90 @@
-@WebApplication1_HostAddress = http://localhost:7029
+@WebApplication1_HostAddress = https://localhost:7029
 
-GET {{WebApplication1_HostAddress}}/api/products
+### GET all menu items
+GET {{WebApplication1_HostAddress}}/api/MenuItem
 Accept: application/json
 
 ###
 
-GET {{WebApplication1_HostAddress}}/api/products/1
+### GET one menu item by id
+GET {{WebApplication1_HostAddress}}/api/MenuItem/6d
 Accept: application/json
 
 ###
 
-POST {{WebApplication1_HostAddress}}/api/products
-Content-Type: application/json
-
-{
-  "name": "Monitor",
-  "price": 899.99
-}
+### GET DB ping
+GET {{WebApplication1_HostAddress}}/api/Db/ping
+Accept: application/json
 
 ###
 
+### POST create menu item (multipart/form-data)
+POST {{WebApplication1_HostAddress}}/api/MenuItem
+Content-Type: multipart/form-data; boundary=----MyBoundary
+
+------MyBoundary
+Content-Disposition: form-data; name="Name"
+
+michal
+------MyBoundary
+Content-Disposition: form-data; name="Description"
+
+test description
+------MyBoundary
+Content-Disposition: form-data; name="Category"
+
+test
+------MyBoundary
+Content-Disposition: form-data; name="SpecialTag"
+
+Popular
+------MyBoundary
+Content-Disposition: form-data; name="Price"
+
+120
+------MyBoundary
+Content-Disposition: form-data; name="File"; filename="samosa.txt"
+Content-Type: text/plain
+
+helloWorld
+------MyBoundary--
+
+###
+
+### PUT update menu item (multipart/form-data)
+PUT {{WebApplication1_HostAddress}}/api/MenuItem/1
+Content-Type: multipart/form-data; boundary=----MyBoundary
+
+------MyBoundary
+Content-Disposition: form-data; name="Id"
+
+1
+------MyBoundary
+Content-Disposition: form-data; name="Name"
+
+Samosa Updated
+------MyBoundary
+Content-Disposition: form-data; name="Description"
+
+Updated description
+------MyBoundary
+Content-Disposition: form-data; name="Category"
+
+Appetizer
+------MyBoundary
+Content-Disposition: form-data; name="SpecialTag"
+
+Popular
+------MyBoundary
+Content-Disposition: form-data; name="Price"
+
+15
+------MyBoundary--
+
+###
+
+### DELETE menu item
+DELETE {{WebApplication1_HostAddress}}/api/MenuItem/12
+Accept: application/json
+
+###

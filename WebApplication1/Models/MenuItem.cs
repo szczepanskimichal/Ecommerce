@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models;
 
@@ -11,4 +12,6 @@ public class MenuItem
     public string? SpecialTag { get; set; }
     [Range(1, 1000)] public double Price { get; set; }
     [Required] public string Image { get; set; } = string.Empty;
+    [NotMapped]
+    public double Rating { get; set; }
 }

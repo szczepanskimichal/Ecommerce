@@ -27,6 +27,17 @@ public class MenuItemController : Controller
     [HttpGet]
     public IActionResult GetMenuItems()
     {
+        List<MenuItem> menuItems = _db.MenuItems.ToList(); // fetch all menu items from the database
+        List<OrderDetailDTO> orderDetailsWithRatings = _db.OrderDetails.Where(od => od.Rating.HasValue).ToList(); // fetch order details with ratings
+        foreach (var menuItem in menuItems)
+        {
+            var ratings = orderDetailsWithRatings.Where(od => od.MenuItemId == menuItem.Id)
+                .Select(od => od.Rating.Value).ToList(); // get ratings for the current menu item
+            double avgRating =
+                ratings.Any() ? ratings.Average() : 0; // calculate average rating or set to 0 if no ratings
+            menuItem.Rating = avgRating; // set the average rating for the menu item
+        }
+
         _response.Result = _db.MenuItems.ToList(); // fetch all menu items from the database
         _response.StatusCode = HttpStatusCode.OK; // set the status code to 200 OK
         return Ok(_response);
@@ -49,6 +60,12 @@ public class MenuItemController : Controller
             _response.StatusCode = HttpStatusCode.NotFound;
             return NotFound(_response);
         }
+        List<OrderDetailDTO> orderDetailsWithRatings = _db.OrderDetails.Where(od => od.Rating != null && od.MenuItemId==menuItem.Id).ToList(); // fetch order details with ratings
+
+        var ratings = orderDetailsWithRatings.Select(od => od.Rating.Value); // get ratings for the current menu item
+        double avgRating = ratings.Any() ? ratings.Average() : 0; // calculate average rating or set to 0 if no ratings
+        menuItem.Rating = avgRating; // set the average rating for the menu item
+        
         _response.Result = menuItem; // set the result to the found menu item
         _response.StatusCode = HttpStatusCode.OK; // set status code to 200 OK
         return Ok(_response); // return 200 response with the API response object
