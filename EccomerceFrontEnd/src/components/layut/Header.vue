@@ -124,7 +124,7 @@
 </template>
 
 <script setup>
-import APP_ROUTE_NAMES from '@/constans/routeNames.js'
+import APP_ROUTE_NAMES from '@/constants/routeNames.js'
 import { useThemeStore } from '@/stores/themeStore.js'
 
 const themeStore = useThemeStore()

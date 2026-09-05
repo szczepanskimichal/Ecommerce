@@ -13,11 +13,10 @@ import OrderConfirmation from '@/views/order/OrderConfirmation.vue'
 import OrderHistory from '@/views/order/OrderHistoryList.vue'
 import OrderManagement from '@/views/order/OrderManagement.vue'
 
-import APP_ROUTE_NAMES from '../constans/routeNames.js'
+import APP_ROUTE_NAMES from '../constants/routeNames.js'
 import Home from '@/views/home/Home.vue'
 
 const router = createRouter({
-
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
